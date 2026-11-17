@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Έξυπνη Ρουτίνα του Σπιτιού</title>
+<meta name="description" content="Οργανωμένο σπίτι σε λιγότερο από 1 ώρα τη μέρα.">
+<meta name="theme-color" content="#4C1D95">
+<meta name="robots" content="noindex,nofollow">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Ρουτίνα">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{--vi:#7C3AED;--vi2:#4C1D95;--vi3:#5B21B6;--lila:#EDE9FE;--bg:#F5F3FF;--rosa:#FFF1F2;--am:#FFE600;--am2:#F59E0B;--ok:#16A34A;--no:#DC2626;--tx:#1F2937;--mut:#6B7280;--mut2:#9CA3AF;--line:#E5E7EB;--hf:Poppins,Inter,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{background:#2E1065}
+body{font-family:Inter,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--tx);font-size:15px;line-height:1.45;background:var(--bg);max-width:480px;margin:0 auto;min-height:100vh;min-height:100dvh;position:relative;overflow-x:hidden}
+button,input,select,textarea{font:inherit;color:inherit}
+button{background:none;border:0;cursor:pointer;text-align:inherit}
+#app{padding-bottom:calc(92px + env(safe-area-inset-bottom))}
+
+/* header */
+.hd{background:linear-gradient(160deg,var(--vi),var(--vi2));color:#fff;padding:calc(26px + env(safe-area-inset-top)) 20px 22px;border-radius:0 0 26px 26px;position:relative}
+.hd h1{font:800 21px/1.2 var(--hf);margin-bottom:14px;padding-right:44px;overflow-wrap:anywhere}
+.hd.sm{padding-bottom:18px}.hd.sm h1{margin-bottom:2px}.hd.sm p{opacity:.85;font-size:13px}
+.gear{position:absolute;right:14px;top:calc(20px + env(safe-area-inset-top));width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;font-size:18px}
+.back{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:13px;color:#fff;background:rgba(255,255,255,.14);border-radius:50px;padding:6px 12px;margin-bottom:10px}
+.pg{display:flex;gap:14px;align-items:center;background:rgba(255,255,255,.12);border-radius:18px;padding:12px}
+.ring{width:58px;height:58px;flex:0 0 58px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background .3s}
+.ring span{width:44px;height:44px;border-radius:50%;background:var(--vi3);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px}
+.pg b{display:block;font-size:15px}.pg small{opacity:.85;font-size:12px}
+.chip{margin-left:auto;background:var(--am);color:var(--vi2);font-weight:800;font-size:12px;border-radius:50px;padding:6px 10px;white-space:nowrap}
+
+/* blocks */
+.tip{margin:14px 16px 0;background:#fff;border-left:4px solid var(--am2);border-radius:12px;padding:10px 12px;font-size:13px;color:#4B5563}
+.tabs{display:flex;gap:8px;margin:14px 16px 0;overflow-x:auto;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}
+.tabs button{font-size:13px;font-weight:600;padding:8px 13px;border-radius:50px;background:#fff;color:var(--mut);white-space:nowrap}
+.tabs button.on{background:var(--vi);color:#fff}
+.days{display:flex;justify-content:space-between;gap:5px;margin:14px 16px 0}
+.days button{flex:1;padding:7px 0;border-radius:12px;background:#fff;text-align:center;font-size:11px;color:var(--mut);position:relative}
+.days button b{display:block;font-size:15px;color:var(--tx)}
+.days .on{background:var(--vi);color:#fff}.days .on b{color:#fff}
+.days .td:not(.on){box-shadow:inset 0 0 0 2px #C4B5FD}
+.days i{position:absolute;top:4px;right:5px;width:7px;height:7px;border-radius:50%;background:var(--ok)}
+.focus{margin:12px 16px 0;font-size:13px;font-weight:700;color:var(--vi3);background:var(--lila);border-radius:10px;padding:9px 12px;display:flex;justify-content:space-between;gap:8px}
+.focus span:last-child{white-space:nowrap}
+.list{margin:10px 16px 0}
+.t{display:flex;width:100%;align-items:center;gap:12px;background:#fff;border-radius:14px;padding:11px 12px;margin-bottom:8px;box-shadow:0 2px 6px rgba(0,0,0,.04);transition:transform .08s}
+.t:active{transform:scale(.985)}
+.cb{width:24px;height:24px;border-radius:7px;border:2px solid #C4B5FD;flex:0 0 24px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:800}
+.t.done .cb{background:var(--ok);border-color:var(--ok)}.t.done .cb:after{content:"✓"}
+.t div{flex:1;min-width:0}.t p{font-size:14px;font-weight:600;overflow-wrap:anywhere}
+.t.done p{color:var(--mut2);text-decoration:line-through}.t small{font-size:11.5px;color:var(--mut2)}
+.t.fut{opacity:.6}
+.pt{font-size:11px;font-weight:800;color:var(--vi);background:var(--lila);border-radius:8px;padding:3px 7px}
+.t.done .pt{background:#DCFCE7;color:var(--ok)}
+.sec{margin:20px 16px 0;font:800 16px var(--hf);color:var(--vi2)}
+.note{margin:8px 16px 0;font-size:13px;color:var(--mut)}
+.card{background:#fff;border-radius:16px;padding:14px;margin:10px 16px 0;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.card h3{font:800 15px var(--hf);color:var(--vi2);margin-bottom:6px}
+.card p{font-size:13.5px;color:#374151;margin-bottom:6px}.card p:last-child{margin-bottom:0}
+.card ul{padding-left:18px;font-size:13.5px;color:#374151}.card li{margin:4px 0}
+.warn{background:var(--rosa);border:1px solid #FECACA}.warn h3{color:#991B1B}
+.yel{background:#FEF9C3;border:1px solid #FDE68A}
+details.card summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px;font-weight:700}
+details.card summary::-webkit-details-marker{display:none}
+details.card summary:after{content:"›";margin-left:auto;font-size:22px;color:var(--mut2);transition:transform .2s}
+details[open].card summary:after{transform:rotate(90deg)}
+details.card .in{margin-top:12px}
+details.card .t{box-shadow:none;background:var(--bg)}
+.ico{width:42px;height:42px;flex:0 0 42px;border-radius:12px;background:var(--lila);display:flex;align-items:center;justify-content:center;font-size:21px}
+.sum b{display:block;font-size:14.5px}.sum small{font-weight:500;color:var(--mut);font-size:12px}
+.bar{height:8px;border-radius:8px;background:var(--lila);overflow:hidden;margin-top:8px}.bar i{display:block;height:100%;background:var(--ok);border-radius:8px;transition:width .3s}
+.bar.v i{background:linear-gradient(90deg,var(--vi),var(--am2))}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:calc(100% - 32px);margin:14px 16px 0;min-height:50px;padding:12px 18px;border-radius:12px;background:var(--ok);color:#fff;font:700 14px var(--hf);text-transform:uppercase;letter-spacing:.03em;box-shadow:0 8px 20px rgba(22,163,74,.28);text-align:center;text-decoration:none}
+.btn.v{background:var(--vi);box-shadow:0 8px 20px rgba(124,58,237,.25)}
+.btn.g{background:#fff;color:var(--vi2);box-shadow:inset 0 0 0 2px #DDD6FE}
+.btn.r{background:#fff;color:var(--no);box-shadow:inset 0 0 0 2px #FECACA}
+.card .btn{width:100%;margin:10px 0 0}
+.seg{display:flex;gap:6px;margin-top:8px}.seg button{flex:1;padding:10px 4px;border-radius:12px;background:var(--bg);font-size:12.5px;font-weight:700;color:var(--mut);text-align:center}
+.seg button.on{background:var(--vi);color:#fff}.seg button span{display:block;font-size:20px}
+.in1{width:100%;border:2px solid #DDD6FE;border-radius:12px;padding:11px 12px;background:#fff;font-size:15px;outline:none}
+.in1:focus{border-color:var(--vi)}
+.row{display:flex;gap:8px;margin-top:8px}.row>*{min-width:0}
+label.l{display:block;font-size:12px;font-weight:700;color:var(--vi3);margin:10px 0 4px}
+.mg{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:13.5px}
+.mg:last-child{border-bottom:0}.mg p{flex:1;font-weight:600;min-width:0;overflow-wrap:anywhere}.mg small{color:var(--mut2);white-space:nowrap}
+.mg.off p{color:var(--mut2);text-decoration:line-through}
+.sw{width:42px;height:24px;flex:0 0 42px;border-radius:24px;background:#D1D5DB;position:relative;transition:background .2s}
+.sw:after{content:"";position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;top:3px;left:3px;transition:left .2s}
+.sw.on{background:var(--vi)}.sw.on:after{left:21px}
+.del{width:32px;height:32px;border-radius:10px;background:var(--rosa);color:var(--no);font-weight:800;text-align:center}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 16px 0}
+.stats div{background:#fff;border-radius:14px;padding:12px 6px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.stats b{display:block;font:800 22px var(--hf);color:var(--vi)}.stats small{font-size:11px;color:var(--mut)}
+.big{font:800 44px/1 var(--hf);color:#fff}.big small{font:600 14px Inter,sans-serif;opacity:.85}
+.chart{display:flex;align-items:flex-end;gap:8px;height:110px;margin-top:10px}
+.chart div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;font-size:11px;color:var(--mut)}
+.chart i{display:block;width:100%;border-radius:8px 8px 3px 3px;background:#DDD6FE;min-height:4px}
+.chart .on i{background:var(--vi)}.chart em{font-style:normal;font-weight:800;font-size:10.5px;color:var(--vi3)}
+.lv{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:13.5px;font-weight:600}
+.lv:last-child{border:0}.lv span{width:30px;height:30px;border-radius:50%;background:var(--lila);display:flex;align-items:center;justify-content:center}
+.lv.ok span{background:var(--am)}.lv small{margin-left:auto;color:var(--mut);font-weight:700}.lv.ok small{color:var(--ok)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.chips button{font-size:12.5px;font-weight:600;padding:7px 11px;border-radius:50px;background:var(--bg);color:var(--vi3)}
+.chips button.on{background:var(--vi);color:#fff}
+.gift{display:flex;gap:12px;align-items:center;width:calc(100% - 32px);background:#fff;border:2px solid #FDE68A;border-radius:18px;padding:14px;margin:10px 16px 0;box-shadow:0 6px 18px rgba(0,0,0,.05)}
+.gift .n{width:36px;height:36px;flex:0 0 36px;border-radius:50%;background:var(--am2);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center}
+.gift b{display:block;font:800 14.5px var(--hf);color:var(--tx)}.gift small{color:var(--mut);font-size:12.5px}
+.gift:after{content:"›";font-size:24px;color:var(--mut2)}
+.menu-d{font-weight:800;color:var(--vi2);font-size:13.5px;margin:12px 0 4px}
+.menu-r{display:flex;align-items:center;gap:8px;margin-top:5px}.menu-r span{flex:0 0 26px;text-align:center;font-size:17px}
+.menu-r input{flex:1;min-width:0;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:13.5px;background:var(--bg);outline:none}
+.menu-r input:focus{border-color:var(--vi);background:#fff}
+.shop{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line)}
+.shop:last-child{border:0}.shop p{flex:1;font-weight:600;font-size:14px;min-width:0;overflow-wrap:anywhere}.shop.done p{color:var(--mut2);text-decoration:line-through}
+.shop.done .cb{background:var(--ok);border-color:var(--ok)}.shop.done .cb:after{content:"✓"}
+.steps{counter-reset:s}.steps li{list-style:none;position:relative;padding-left:34px;margin:10px 0;font-size:13.5px}
+.steps li:before{counter-increment:s;content:counter(s);position:absolute;left:0;top:-2px;width:24px;height:24px;border-radius:50%;background:var(--vi);color:#fff;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center}
+.steps{padding-left:0!important}
+
+/* nav */
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;display:flex;justify-content:space-around;border-top:1px solid var(--lila);padding:8px 4px calc(8px + env(safe-area-inset-bottom));z-index:20}
+.nav[hidden]{display:none}
+.nav button{flex:1;font-size:10.5px;color:var(--mut2);text-align:center;padding:4px 0;font-weight:600}
+.nav button i{display:block;font-style:normal;font-size:20px;line-height:1.25;filter:grayscale(1);opacity:.6}
+.nav .on{color:var(--vi);font-weight:800}.nav .on i{filter:none;opacity:1}
+
+/* welcome */
+.wel{min-height:100vh;min-height:100dvh;background:linear-gradient(180deg,var(--vi2) 0%,var(--vi3) 55%,var(--vi) 100%);color:#fff;padding:calc(40px + env(safe-area-inset-top)) 22px 30px;text-align:center}
+.wel .pill{display:inline-block;background:rgba(255,255,255,.14);color:var(--am);font:700 11.5px var(--hf);letter-spacing:.08em;text-transform:uppercase;padding:8px 16px;border-radius:50px;margin-bottom:16px}
+.wel h1{font:800 27px/1.18 var(--hf);text-transform:uppercase}.wel h1 em{font-style:normal;color:var(--am)}
+.wel>p{margin:12px 0 20px;font-size:15px;opacity:.95}
+.wel .box{background:#fff;color:var(--tx);border-radius:22px;padding:18px;text-align:left}
+.wel .btn{width:100%;margin:16px 0 0}
+
+.toast{position:fixed;left:50%;bottom:calc(100px + env(safe-area-inset-bottom));transform:translate(-50%,20px);background:var(--vi2);color:#fff;font-weight:700;font-size:13.5px;padding:11px 18px;border-radius:50px;box-shadow:0 10px 30px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:.25s;z-index:50;max-width:92vw;text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.conf{position:fixed;inset:0;pointer-events:none;z-index:60;overflow:hidden}
+.conf i{position:absolute;top:-30px;font-style:normal;font-size:22px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg)}}
+@media (prefers-reduced-motion:reduce){.conf{display:none}*{transition:none!important}}
+#print{display:none}
+
+@media print{
+  @page{size:A4;margin:10mm}
+  html,body{background:#fff!important;max-width:none}
+  #app,.nav,.toast,.conf{display:none!important}
+  #print{display:block;font-size:10.5pt;color:#111}
+  #print h1{font:800 20pt var(--hf);color:#4C1D95;text-align:center}
+  #print .sub{text-align:center;color:#555;margin-bottom:5mm;font-size:10pt}
+  #print h2{font:800 11pt var(--hf);background:#4C1D95;color:#fff;padding:1.5mm 3mm;border-radius:2mm;margin:0 0 1.5mm;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #print h2 small{font-weight:600;float:right}
+  #print .g{display:grid;grid-template-columns:1fr 1fr;gap:4mm}
+  #print .bx{border:1px solid #C4B5FD;border-radius:3mm;padding:2.5mm;break-inside:avoid}
+  #print .li{display:flex;align-items:center;gap:2.5mm;padding:1.1mm 0;border-bottom:1px dotted #ddd}
+  #print .li:last-child{border:0}#print .li span{flex:1}#print .li small{color:#666;white-space:nowrap}
+  #print .sq{width:4mm;height:4mm;flex:0 0 4mm;border:1.5px solid #7C3AED;border-radius:1mm;display:inline-block}
+  #print .sq7{display:flex;gap:1.2mm}
+  #print .hd7{display:flex;justify-content:flex-end;gap:1.2mm;font-size:7.5pt;color:#666}#print .hd7 b{width:4mm;text-align:center}
+  #print .ft{margin-top:4mm;text-align:center;font-size:9.5pt;color:#444}
+  #print table{width:100%;border-collapse:collapse;margin-bottom:5mm}
+  #print th,#print td{border:1px solid #C4B5FD;padding:2.5mm;text-align:left;vertical-align:top;font-size:10pt;height:13mm}
+  #print th{background:#EDE9FE;height:auto;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #print td:first-child{font-weight:800;color:#4C1D95;width:24mm}
+  #print .cols{columns:3;column-gap:6mm}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<nav class="nav" id="nav" hidden></nav>
+<div class="toast" id="toast"></div>
+<div id="print"></div>
+
+<script>
+/* ============================================================
+   ΡΥΘΜΙΣΕΙΣ (τα μόνα που αλλάζει ο διαχειριστής)
+   ============================================================ */
+const CONFIG={
+  marca:'Έξυπνη Ρουτίνα του Σπιτιού',
+  soporte:'infodigital2028@gmail.com'
+};
+
+/* ============================================================
+   ΔΕΔΟΜΕΝΑ ΤΗΣ ΡΟΥΤΙΝΑΣ (ίδια με τον οδηγό ρουτινών)
+   σημαία 3ης θέσης: 's' = δεν ισχύει σε στούντιο · 'h' = μόνο σε μεγάλο σπίτι
+   ============================================================ */
+const BASE=[["Στρώσε το κρεβάτι μόλις σηκωθείς",2],["Άνοιξε τα παράθυρα να αεριστεί",1],["Πλύνε ή βάλε στο πλυντήριο τα πιάτα",5],["Σκούπισε τον πάγκο και το τραπέζι",3],["Μάζεψε ό,τι είναι εκτός θέσης",3],["Βγάλε τα σκουπίδια αν γέμισαν",1]];
+const DAYS=[
+ {d:"Δευτέρα",s:"Δε",amb:"Κουζίνα",ic:"🍳",desc:"Η καρδιά του σπιτιού, καθαρή για όλη την εβδομάδα",
+  tip:"Από πάνω προς τα κάτω: το πάτωμα πάντα τελευταίο.",
+  ex:["10 λεπτά: νεροχύτης και πάτωμα","20 λεπτά: και οι εστίες","40 λεπτά: όλη η λίστα"],
+  need:["Πολυκαθαριστικό","Πανί μικροϊνών","Σόδα και ξίδι","Σφουγγαρίστρα"],
+  t:[["Άδειασε και καθάρισε το ψυγείο",10],["Σκούπισε τις πόρτες των ντουλαπιών",5],["Καθάρισε τις εστίες και τον απορροφητήρα",10],["Καθάρισε τον φούρνο μικροκυμάτων",5],["Πλύνε τον νεροχύτη και τη βρύση",5],["Σφουγγάρισε το πάτωμα της κουζίνας",5]]},
+ {d:"Τρίτη",s:"Τρ",amb:"Μπάνιο",ic:"🛁",desc:"Λαμπερό μπάνιο χωρίς να τρίβεις ώρες",
+  tip:"Ψέκασε πρώτα και περίμενε 5 λεπτά: τρίβεις τα μισά.",
+  ex:["15 λεπτά: λεκάνη, νιπτήρας, πετσέτες","25 λεπτά: και το ντους","35 λεπτά: όλη η λίστα"],
+  need:["Καθαριστικό μπάνιου","Βούρτσα λεκάνης","Πανί για τζάμια","Καθαρές πετσέτες"],
+  t:[["Καθάρισε τη λεκάνη μέσα και έξω",7],["Τρίψε το ντους ή την μπανιέρα",10],["Καθάρισε τον νιπτήρα και τη βρύση",5],["Γυάλισε τον καθρέφτη",3],["Άλλαξε πετσέτες και πατάκι",3],["Σφουγγάρισε το πάτωμα του μπάνιου",7],["Πέρασε γρήγορα το δεύτερο μπάνιο ή το WC",8,"h"]]},
+ {d:"Τετάρτη",s:"Τε",amb:"Υπνοδωμάτια",ic:"🛏️",desc:"Καθαρά σεντόνια και ήσυχα υπνοδωμάτια",
+  tip:"Ένα συρτάρι τη φορά, όχι όλη η ντουλάπα μαζί.",
+  ex:["15 λεπτά: σεντόνια, ρούχα, αέρισμα","25 λεπτά: και ξεσκόνισμα, σκούπισμα","35 λεπτά: όλη η λίστα"],
+  need:["Καθαρά σεντόνια","Ξεσκονόπανο","Κουτί για ό,τι φεύγει","Σκούπα"],
+  t:[["Άλλαξε τα σεντόνια",10],["Ξεσκόνισε κομοδίνα και ράφια",5],["Τακτοποίησε μία ντουλάπα ή ένα συρτάρι",10],["Μάζεψε τα ρούχα από την καρέκλα",3],["Σκούπισε κάτω από το κρεβάτι",5],["Αέρισε στρώματα και μαξιλάρια",2],["Τακτοποίησε το δεύτερο υπνοδωμάτιο",8,"h"]]},
+ {d:"Πέμπτη",s:"Πε",amb:"Σαλόνι",ic:"🛋️",desc:"Το σαλόνι έτοιμο για να ξεκουραστείς",
+  tip:"Ένα καλάθι για ό,τι δεν ανήκει στο σαλόνι.",
+  ex:["14 λεπτά: μαξιλάρια, τραπεζάκι, πάτωμα","27 λεπτά: και καναπές, φυτά","35 λεπτά: όλη η λίστα"],
+  need:["Ξεσκονόπανο","Καλάθι τακτοποίησης","Ποτιστήρι","Ηλεκτρική σκούπα"],
+  t:[["Ξεσκόνισε την τηλεόραση και τα ράφια",8],["Τίναξε μαξιλάρια και κουβέρτες",4],["Σκούπισε τον καναπέ και από κάτω",8],["Καθάρισε το τραπεζάκι του σαλονιού",3],["Πότισε τα φυτά",5],["Σκούπισε το πάτωμα του σαλονιού",7],["Σκούπισε το μπαλκόνι ή την αυλή",8,"h"]]},
+ {d:"Παρασκευή",s:"Πα",amb:"Ρούχα και είσοδος",ic:"🧺",desc:"Όλα στη θέση τους πριν από το Σαββατοκύριακο",
+  tip:"Δίπλωσε μόλις στεγνώσουν: όχι βουνό στην καρέκλα.",
+  ex:["12 λεπτά: πλυντήριο και άπλωμα","22 λεπτά: και δίπλωμα","40 λεπτά: όλη η λίστα"],
+  need:["Απορρυπαντικό","Απλώστρα","Παπουτσοθήκη","Σφουγγαρίστρα"],
+  t:[["Βάλε ένα πλυντήριο ρούχα",5],["Άπλωσε ή βάλε στο στεγνωτήριο",7],["Δίπλωσε και φύλαξε τα καθαρά ρούχα",10],["Τακτοποίησε τα παπούτσια στην είσοδο",5],["Άδειασε τσάντες και τσέπες",5],["Σφουγγάρισε το πάτωμα της εισόδου",8,"s"]]},
+ {d:"Σάββατο",s:"Σα",amb:"Όλο το σπίτι",ic:"🏡",desc:"Μια γρήγορη ματιά σε όλο το σπίτι",
+  tip:"Βάλε μουσική και χρονόμετρο: 40 λεπτά και τέλος.",
+  ex:["15 λεπτά: ηλεκτρική σκούπα","28 λεπτά: και σφουγγάρισμα, σκουπίδια","40 λεπτά: όλη η λίστα"],
+  need:["Ηλεκτρική σκούπα","Σφουγγαρίστρα","Πολυκαθαριστικό","Σακούλες σκουπιδιών"],
+  t:[["Σκούπισε με ηλεκτρική όλο το σπίτι",15],["Σφουγγάρισε σαλόνι και διάδρομο",10,"s"],["Καθάρισε διακόπτες και πόμολα",5],["Βγάλε ανακύκλωση και σκουπίδια",3],["Πέτα ένα πράγμα που δεν χρειάζεσαι",2],["Συμπλήρωσε χαρτί και σαπούνι",5]]},
+ {d:"Κυριακή",s:"Κυ",amb:"Ξεκούραση και σχέδιο",ic:"☕",desc:"Ξεκούραση και σχέδιο για την επόμενη εβδομάδα",
+  tip:"Μια ήρεμη Κυριακή κάνει εύκολη όλη την εβδομάδα.",
+  ex:["5 λεπτά: μόνο η λίστα για το σούπερ μάρκετ","15 λεπτά: και το μενού","20 λεπτά: όλη η λίστα"],
+  need:["Τετράδιο ή κινητό","Το εβδομαδιαίο μενού","Ημερολόγιο","Ένα ζεστό τσάι"],
+  t:[["Γράψε το μενού της εβδομάδας",10],["Φτιάξε τη λίστα για το σούπερ μάρκετ",5],["Δες το πρόγραμμα της εβδομάδας",3],["Μέτρησε τους πόντους σου",2]]}
+];
+const P_BASE=5,P_DAY=8;
+const LEVELS=[[150,"Καλή αρχή","🌱"],[300,"Σε ρυθμό","⚡"],[450,"Αστέρι του σπιτιού","⭐"]];
+const REWARDS=["Ένα ήσυχο μπάνιο","Μια ταινία","Καφές με φίλη","Λουλούδια για σένα"];
+const HOMES=[["🏢","Στούντιο"],["🏠","Διαμέρισμα"],["🏡","Μεγάλο σπίτι"]];
+const MEALS=[["☕","Πρωινό"],["🍽️","Μεσημεριανό"],["🌙","Βραδινό"]];
+const IDEAS=[
+ ["Γιαούρτι με μέλι και καρύδια","Τοστ με τυρί και ντομάτα","Βρώμη με μπανάνα","Βραστά αυγά με ψωμί ολικής","Φρυγανιές με ταχίνι και μέλι","Ομελέτα με φέτα","Κουλούρι με τυρί και φρούτο"],
+ ["Φακές με φέτα","Κοτόπουλο στον φούρνο με πατάτες","Φασολάκια λαδερά","Μακαρόνια με κιμά","Ψάρι στον φούρνο με σαλάτα","Γεμιστά","Κοτόπουλο λεμονάτο με ρύζι"],
+ ["Χωριάτικη με παξιμάδι","Ό,τι έμεινε από το μεσημέρι","Ομελέτα με λαχανικά","Σούπα λαχανικών","Τοστ και σαλάτα","Πίτα με σαλάτα","Γιαούρτι με φρούτα"]
+];
+
+/* ============================================================ ΚΑΤΑΣΤΑΣΗ */
+const KEY='exypni_routina_v1';
+const def=()=>({name:'',home:1,ok:false,done:{},custom:[],off:{},reward:'',menu:{},shop:[]});
+let S=(()=>{try{return Object.assign(def(),JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){return def()}})();
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+let view=S.ok?'home':'welcome', sel=null, openRoom=-1;
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const today=()=>{const n=new Date();return new Date(n.getFullYear(),n.getMonth(),n.getDate())};
+const dkey=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const todayIdx=()=>(today().getDay()+6)%7;
+function week(off){const m=today();m.setDate(m.getDate()-todayIdx()+(off||0)*7);return DAYS.map((_,i)=>{const x=new Date(m);x.setDate(m.getDate()+i);return x})}
+const mins=n=>n+' λεπτά';
+
+/* εργασίες */
+function baseTasks(all){
+  const a=BASE.map((b,i)=>({id:'b'+i,t:b[0],m:b[1],p:P_BASE}))
+    .concat(S.custom.filter(c=>c.day<0).map(c=>({id:c.id,t:c.t,m:c.m,p:P_BASE,c:1})));
+  return all?a:a.filter(x=>!S.off[x.id]);
+}
+function dayTasks(i,all){
+  const a=DAYS[i].t.map((x,j)=>({id:'d'+i+'_'+j,t:x[0],m:x[1],p:P_DAY,f:x[2]}))
+    .filter(x=>!(x.f==='s'&&S.home===0)&&!(x.f==='h'&&S.home<2))
+    .concat(S.custom.filter(c=>c.day===i).map(c=>({id:c.id,t:c.t,m:c.m,p:P_DAY,c:1})));
+  return all?a:a.filter(x=>!S.off[x.id]);
+}
+const sum=(a,f)=>a.reduce((n,x,i)=>n+f(x,i),0);
+const doneOf=k=>S.done[k]||{};
+const cnt=(a,k)=>a.filter(x=>x.id in doneOf(k)).length;
+const ptsOf=k=>sum(Object.values(doneOf(k)),v=>+v||0);
+const weekPts=off=>sum(week(off),d=>ptsOf(dkey(d)));
+const weekMax=()=>sum(DAYS,(_,i)=>sum(baseTasks(),x=>x.p)+sum(dayTasks(i),x=>x.p));
+function streak(){let n=0,d=today();if(!ptsOf(dkey(d)))d.setDate(d.getDate()-1);while(ptsOf(dkey(d))){n++;d.setDate(d.getDate()-1)}return n}
+const totalPts=()=>sum(Object.keys(S.done),ptsOf);
+
+/* ============================================================ UI helpers */
+let tt;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),2400)}
+function confetti(){const c=document.createElement('div');c.className='conf';const e=['🎉','✨','💜','⭐','🧹','🌸'];
+  for(let i=0;i<26;i++){const s=document.createElement('i');s.textContent=e[i%e.length];s.style.left=Math.random()*100+'%';s.style.animationDuration=(1.6+Math.random()*1.6)+'s';s.style.animationDelay=Math.random()*.5+'s';c.appendChild(s)}
+  document.body.appendChild(c);setTimeout(()=>c.remove(),4000)}
+function taskRow(x,di,k,fut){const dn=x.id in doneOf(k);
+  return `<button class="t ${dn?'done':''} ${fut?'fut':''}" data-act="tog" data-id="${x.id}" data-p="${x.p}" data-d="${di}" aria-pressed="${dn}"><span class="cb"></span><div><p>${esc(x.t)}</p><small>⏱ ${mins(x.m)}</small></div><span class="pt">+${x.p}</span></button>`}
+const head=(t,sub,back)=>`<header class="hd sm">${back?`<button class="back" data-act="go" data-v="${back}">‹ Πίσω</button>`:''}<h1>${t}</h1>${sub?`<p>${sub}</p>`:''}</header>`;
+const homeSeg=()=>`<div class="seg">${HOMES.map((h,i)=>`<button class="${S.home===i?'on':''}" data-act="home" data-i="${i}"><span>${h[0]}</span>${h[1]}</button>`).join('')}</div>`;
+
+/* ============================================================ ΟΘΟΝΕΣ */
+const V={};
+
+V.welcome=()=>`<div class="wel">
+ <span class="pill">Καλώς ήρθες!</span>
+ <h1>Το σπίτι σου οργανωμένο, <em>επιτέλους</em></h1>
+ <p>Μικρές, οπτικές εργασίες μοιρασμένες ανά μέρα και ανά χώρο. <b>Λιγότερο από 1 ώρα τη μέρα, χωρίς να εξαντλείσαι.</b></p>
+ <div class="box">
+  <label class="l" for="nm" style="margin-top:0">Πώς σε λένε;</label>
+  <input class="in1" id="nm" maxlength="24" placeholder="Το όνομά σου" autocomplete="given-name" value="${esc(S.name)}">
+  <label class="l">Πού μένεις;</label>${homeSeg()}
+  <p style="font-size:12.5px;color:var(--mut);margin-top:10px">Η ρουτίνα προσαρμόζεται στο σπίτι σου. Το αλλάζεις όποτε θέλεις.</p>
+  <button class="btn" data-act="start">Ξεκινάω τη ρουτίνα μου</button>
+ </div></div>`;
+
+V.home=()=>{
+  const w=week(),ti=todayIdx(),i=sel==null?ti:sel,k=dkey(w[i]),D=DAYS[i],fut=i>ti;
+  const dt=dayTasks(i),bt=baseTasks(),all=dt.concat(bt),dn=cnt(all,k),pc=all.length?Math.round(dn/all.length*100):0;
+  const h=new Date().getHours(),gr=(h>=5&&h<12)?'Καλημέρα':'Καλησπέρα';
+  const tm=sum(all,x=>x.m);
+  return `<header class="hd"><button class="gear" data-act="go" data-v="settings" aria-label="Ρυθμίσεις">⚙️</button>
+   <h1>${gr}${S.name?', '+esc(S.name):''} 👋</h1>
+   <div class="pg"><div class="ring" style="background:conic-gradient(var(--am) 0 ${pc}%,rgba(255,255,255,.25) 0)"><span>${pc}%</span></div>
+   <div><b>${i===ti?'Οι εργασίες της ημέρας':'Οι εργασίες: '+D.d}</b><small>${dn} από ${all.length} εργασίες έγιναν</small></div>
+   <button class="chip" data-act="go" data-v="points">⭐ ${weekPts(0)}</button></div></header>
+  <div class="tip"><b>Συμβουλή της ημέρας:</b> ${D.tip}</div>
+  <div class="tabs"><button class="on">Σήμερα</button><button data-act="go" data-v="week">Εβδομάδα</button><button data-act="go" data-v="tasks">Εργασίες</button><button data-act="go" data-v="rooms">Χώροι</button></div>
+  <div class="days">${w.map((d,j)=>{const a=dayTasks(j).concat(bt),full=a.length&&cnt(a,dkey(d))===a.length;
+    return `<button class="${j===i?'on':''} ${j===ti?'td':''}" data-act="day" data-i="${j}" aria-label="${DAYS[j].d}">${DAYS[j].s}<b>${d.getDate()}</b>${full?'<i></i>':''}</button>`}).join('')}</div>
+  <div class="focus"><span>${D.ic} ${D.amb}</span><span>${mins(sum(dt,x=>x.m))}</span></div>
+  <div class="list">${dt.map(x=>taskRow(x,i,k,fut)).join('')||'<p class="note" style="margin:0 0 8px">Δεν έχεις εργασίες χώρου σήμερα.</p>'}</div>
+  <div class="focus"><span>☀️ Η καθημερινή βάση</span><span>${mins(sum(bt,x=>x.m))}</span></div>
+  <div class="list">${bt.map(x=>taskRow(x,i,k,fut)).join('')}</div>
+  <p class="note">Σύνολο ημέρας: <b>${mins(tm)}</b>${tm<60?' · λιγότερο από 1 ώρα ✓':''}</p>
+  <details class="card"><summary><span class="ico">⏱</span><span class="sum"><b>Έχεις λιγότερο χρόνο;</b><small>Κάνε μόνο τα βασικά</small></span></summary>
+   <div class="in"><ul>${D.ex.map(e=>`<li>${e}</li>`).join('')}</ul><p style="margin-top:8px"><b>Τι χρειάζεσαι:</b> ${D.need.join(' · ')}</p></div></details>
+  ${i!==ti?`<button class="btn g" data-act="day" data-i="${ti}">Πίσω στο σήμερα</button>`:''}`;
+};
+
+V.week=()=>{
+  const w=week(),ti=todayIdx(),bt=baseTasks();
+  return head('Η ρουτίνα της εβδομάδας','Έτοιμη: απλώς την ακολουθείς και τσεκάρεις')+
+  `<details class="card"><summary><span class="ico">☀️</span><span class="sum"><b>Κάθε μέρα · Η βάση</b><small>${mins(sum(bt,x=>x.m))} · οι κινήσεις που κρατάνε το σπίτι όρθιο</small></span></summary>
+    <div class="in"><ul>${bt.map(x=>`<li>${esc(x.t)} <small style="color:var(--mut2)">· ${mins(x.m)}</small></li>`).join('')}</ul></div></details>`+
+  w.map((d,i)=>{const dt=dayTasks(i),a=dt.concat(bt),k=dkey(d),n=cnt(a,k);
+    return `<details class="card" ${i===ti?'open':''}><summary><span class="ico">${DAYS[i].ic}</span><span class="sum"><b>${DAYS[i].d}${i===ti?' · σήμερα':''}</b><small>${DAYS[i].amb} · ${mins(sum(dt,x=>x.m))} · ${n}/${a.length}</small></span></summary>
+     <div class="in"><p>${DAYS[i].desc}</p><div class="bar"><i style="width:${a.length?n/a.length*100:0}%"></i></div>
+     <ul style="margin-top:10px">${dt.map(x=>`<li>${esc(x.t)} <small style="color:var(--mut2)">· ${mins(x.m)}</small></li>`).join('')}</ul>
+     <button class="btn v" data-act="day" data-i="${i}">Άνοιξε τη μέρα</button></div></details>`}).join('')+
+  `<button class="btn g" data-act="print" data-w="routine">🖨️ Εκτύπωσε για το ψυγείο</button>
+   <p class="note">Αν προτιμάς το χαρτί, την τυπώνεις και την κολλάς στο ψυγείο. Από το κινητό μπορείς και να την αποθηκεύσεις ως PDF.</p>`;
+};
+
+V.rooms=()=>{
+  const w=week(),ti=todayIdx();
+  return head('Οργάνωση ανά χώρο','Κάθε μέρα άλλος χώρος: τίποτα δεν μαζεύεται')+
+  `<div class="card"><h3>Το σπίτι σου</h3><p>Διάλεξε πού μένεις και η ρουτίνα προσαρμόζεται.</p>${homeSeg()}</div>`+
+  DAYS.map((D,i)=>{const dt=dayTasks(i),k=dkey(w[i]),n=cnt(dt,k);
+    return `<details class="card" data-room="${i}" ${openRoom===i?'open':''}><summary><span class="ico">${D.ic}</span><span class="sum"><b>${D.amb}</b><small>${D.d} · ${mins(sum(dt,x=>x.m))} · ${n}/${dt.length} αυτή την εβδομάδα</small></span></summary>
+     <div class="in"><div class="bar"><i style="width:${dt.length?n/dt.length*100:0}%"></i></div><div style="margin-top:10px">${dt.map(x=>taskRow(x,i,k,i>ti)).join('')}</div>
+     <p><b>Τι χρειάζεσαι:</b> ${D.need.join(' · ')}</p><p><b>Συμβουλή:</b> ${D.tip}</p></div></details>`}).join('')+
+  `<button class="btn g" data-act="go" data-v="tasks">＋ Πρόσθεσε δική σου εργασία</button>`;
+};
+
+V.tasks=()=>{
+  const grp=(title,a,m)=>`<div class="card"><h3>${title} <small style="font:600 12px Inter,sans-serif;color:${m>59?'var(--no)':'var(--mut)'}">· ${mins(m)}${m>59?' (πάνω από 1 ώρα)':''}</small></h3>${
+    a.map(x=>`<div class="mg ${S.off[x.id]?'off':''}"><p>${esc(x.t)}</p><small>${mins(x.m)}</small>${x.c?`<button class="del" data-act="del" data-id="${x.id}" aria-label="Διαγραφή">✕</button>`:`<button class="sw ${S.off[x.id]?'':'on'}" data-act="off" data-id="${x.id}" role="switch" aria-checked="${!S.off[x.id]}" aria-label="${esc(x.t)}"></button>`}</div>`).join('')}</div>`;
+  const bm=sum(baseTasks(),x=>x.m);
+  return head('Οι εργασίες μου','Κράτα ό,τι ταιριάζει στο σπίτι σου')+
+  `<div class="card"><h3>Νέα εργασία</h3>
+    <input class="in1" id="nt" maxlength="60" placeholder="π.χ. Τάισε τη γάτα">
+    <div class="row"><select class="in1" id="nd" style="flex:2"><option value="-1">Κάθε μέρα</option>${DAYS.map((D,i)=>`<option value="${i}">${D.d}</option>`).join('')}</select>
+    <select class="in1" id="nm2" style="flex:1">${[2,3,5,8,10,15].map(m=>`<option value="${m}" ${m===5?'selected':''}>${m}′</option>`).join('')}</select></div>
+    <button class="btn v" data-act="add">Πρόσθεσε</button></div>
+   <p class="note">Κλείσε με τον διακόπτη όποια εργασία δεν σου χρειάζεται. Οι εργασίες της βάσης δίνουν +${P_BASE} πόντους, της ημέρας +${P_DAY}.</p>`+
+  grp('☀️ Κάθε μέρα · Η βάση',baseTasks(1),bm)+
+  DAYS.map((D,i)=>grp(D.ic+' '+D.d+' · '+D.amb,dayTasks(i,1),bm+sum(dayTasks(i),x=>x.m))).join('');
+};
+
+V.points=()=>{
+  const p=weekPts(0),mx=weekMax(),w=week(),ti=todayIdx(),vals=w.map(d=>ptsOf(dkey(d))),top=Math.max(...vals,1);
+  const next=LEVELS.find(l=>p<l[0]),cur=[...LEVELS].reverse().find(l=>p>=l[0]);
+  const goal=next?next[0]:mx;
+  return `<header class="hd sm"><h1>Σύστημα πόντων</h1><p>Η τάξη γίνεται συνήθεια</p>
+   <div class="pg" style="margin-top:14px;display:block"><div class="big">${p} <small>πόντοι αυτή την εβδομάδα</small></div>
+   <div class="bar v" style="background:rgba(255,255,255,.22);margin-top:12px"><i style="width:${Math.min(100,p/goal*100)}%"></i></div>
+   <small style="display:block;margin-top:8px">${next?`Ακόμα ${next[0]-p} πόντοι για «${next[1]}» ${next[2]}`:'Έφτασες στο ανώτερο επίπεδο ⭐ Μπράβο!'}</small></div></header>
+  <div class="stats"><div><b>${streak()}</b><small>μέρες στη σειρά</small></div><div><b>${cur?cur[2]:'—'}</b><small>${cur?cur[1]:'Ξεκίνα σήμερα'}</small></div><div><b>${totalPts()}</b><small>πόντοι συνολικά</small></div></div>
+  <div class="card"><h3>Η εβδομάδα σου</h3><div class="chart">${vals.map((v,i)=>`<div class="${i===ti?'on':''}"><em>${v||''}</em><i style="height:${v/top*78}%"></i>${DAYS[i].s}</div>`).join('')}</div>
+   <p style="margin-top:10px;color:var(--mut);font-size:12.5px">Μέγιστο της εβδομάδας: ${mx} πόντοι · Προηγούμενη εβδομάδα: ${weekPts(-1)}</p></div>
+  <div class="card"><h3>Τα επίπεδα της εβδομάδας</h3>${LEVELS.map(l=>`<div class="lv ${p>=l[0]?'ok':''}"><span>${l[2]}</span>${l[1]}<small>${p>=l[0]?'✓ ':''}${l[0]} πόντοι</small></div>`).join('')}</div>
+  <div class="card ${S.reward&&p>=300?'yel':''}"><h3>Η ανταμοιβή μου</h3>
+   <p>${S.reward&&p>=300?`🎁 Την κέρδισες: <b>${esc(S.reward)}</b>. Η ανταμοιβή είναι για σένα!`:'Διάλεξε τη μικρή σου ανταμοιβή για όταν φτάσεις τους 300 πόντους.'}</p>
+   <div class="chips">${REWARDS.map(r=>`<button class="${S.reward===r?'on':''}" data-act="rew" data-r="${r}">${r}</button>`).join('')}</div>
+   <div class="row"><input class="in1" id="rw" maxlength="40" placeholder="Ή γράψε τη δική σου" value="${REWARDS.includes(S.reward)?'':esc(S.reward)}"><button class="btn v" style="width:auto;margin:0;min-height:0;flex:0 0 auto" data-act="rewc">OK</button></div></div>
+  <div class="card"><h3>Πώς μετράνε οι πόντοι</h3><ul><li>Κάθε εργασία της βάσης: <b>+${P_BASE}</b></li><li>Κάθε εργασία της ημέρας: <b>+${P_DAY}</b></li><li>Την Κυριακή βλέπεις σε ποιο επίπεδο έφτασες</li></ul>
+   <p style="margin-top:8px"><b>Μετράει η συνέπεια, όχι η τελειότητα.</b> Έχασες μια μέρα; Δεν πειράζει. Συνεχίζεις από τη σημερινή.</p></div>`;
+};
+
+V.gifts=()=>head('Τα δώρα σου','Η εφαρμογή σου έρχεται γεμάτη εκπλήξεις')+
+ [['products','Καθάρισε το σπίτι με μόνο 3 προϊόντα','Μπάνιο, κουζίνα, υπνοδωμάτια και σαλόνι'],
+  ['menu','Έξυπνο εβδομαδιαίο μενού','Γεύματα και λίστα για το σούπερ μάρκετ']]
+ .map((g,i)=>`<button class="gift" data-act="go" data-v="${g[0]}"><span class="n">${i+1}</span><span style="flex:1"><b>${g[1]}</b><small>${g[2]}</small></span></button>`).join('')+
+ `<div class="card"><h3>🖨️ Εκτυπώσιμη έκδοση</h3><p>Η ρουτίνα της εβδομάδας σε μία σελίδα, για το ψυγείο.</p><button class="btn g" data-act="print" data-w="routine">Εκτύπωσε τη ρουτίνα</button></div>`;
+
+V.products=()=>head('Καθάρισε με μόνο 3 προϊόντα','Λιγότερα έξοδα, λιγότερο χάος κάτω από τον νεροχύτη','gifts')+
+ `<div class="card"><h3>Τα 3 προϊόντα που κάνουν τα πάντα</h3>
+   <div class="lv ok"><span>1</span>Λευκό ξίδι<small style="color:var(--mut)">άλατα, τζάμια, μυρωδιές</small></div>
+   <div class="lv ok"><span>2</span>Μαγειρική σόδα<small style="color:var(--mut)">λίπη, λεκέδες, τρίψιμο</small></div>
+   <div class="lv ok"><span>3</span>Υγρό πιάτων<small style="color:var(--mut)">καθημερινή βρομιά</small></div>
+   <p style="margin-top:8px">Και δύο εργαλεία: ένα μπουκάλι με ψεκαστήρα και 2–3 πανιά μικροϊνών.</p></div>
+  <div class="card"><h3>Οι 3 βασικές συνταγές</h3><ul>
+   <li><b>Σπρέι για όλα:</b> 1 μέρος ξίδι + 1 μέρος νερό στον ψεκαστήρα.</li>
+   <li><b>Πάστα καθαρισμού:</b> 3 κουταλιές σόδα + 1 κουταλιά νερό.</li>
+   <li><b>Σαπουνόνερο:</b> 1 κουταλάκι υγρό πιάτων σε 1 λίτρο ζεστό νερό.</li></ul></div>
+  <div class="card"><h3>🍳 Κουζίνα</h3><ul>
+   <li><b>Πάγκος και ντουλάπια:</b> σαπουνόνερο και στεγνό πανί.</li>
+   <li><b>Εστίες και φούρνος:</b> πάστα σόδας, περίμενε 15 λεπτά, σκούπισε.</li>
+   <li><b>Νεροχύτης:</b> πασπάλισε σόδα, τρίψε, ξέβγαλε. Σπρέι ξιδιού για τη βρύση.</li>
+   <li><b>Φούρνος μικροκυμάτων:</b> ένα μπολ με νερό και ξίδι για 3 λεπτά, μετά σκούπισε.</li>
+   <li><b>Ψυγείο:</b> 1 κουταλιά σόδα σε 1 λίτρο νερό· ένα ανοιχτό μπολάκι σόδα για τις μυρωδιές.</li></ul></div>
+  <div class="card"><h3>🛁 Μπάνιο</h3><ul>
+   <li><b>Άλατα σε βρύσες και ντους:</b> σπρέι ξιδιού, 5 λεπτά, ξέβγαλμα.</li>
+   <li><b>Λεκάνη:</b> μισό φλιτζάνι σόδα και ένα φλιτζάνι ξίδι, 10 λεπτά, βούρτσα.</li>
+   <li><b>Καθρέφτης:</b> σπρέι ξιδιού και πανί μικροϊνών.</li>
+   <li><b>Αρμοί:</b> πάστα σόδας και μια παλιά οδοντόβουρτσα.</li></ul></div>
+  <div class="card"><h3>🛏️ Υπνοδωμάτια</h3><ul>
+   <li><b>Στρώμα:</b> πασπάλισε σόδα, άφησε 30 λεπτά, πέρνα με ηλεκτρική σκούπα.</li>
+   <li><b>Ξεσκόνισμα:</b> ελαφρώς νωπό πανί μικροϊνών, από πάνω προς τα κάτω.</li>
+   <li><b>Ντουλάπα:</b> ένα ανοιχτό βαζάκι σόδα απορροφά την υγρασία και τις μυρωδιές.</li></ul></div>
+  <div class="card"><h3>🛋️ Σαλόνι</h3><ul>
+   <li><b>Τζάμια:</b> σπρέι ξιδιού και στεγνό πανί μικροϊνών.</li>
+   <li><b>Χαλί και καναπές:</b> σόδα για 20 λεπτά, μετά ηλεκτρική σκούπα.</li>
+   <li><b>Πλακάκια:</b> σαπουνόνερο με καλά στυμμένη σφουγγαρίστρα.</li></ul></div>
+  <div class="card warn"><h3>⚠️ Πρόσεξε</h3><ul>
+   <li><b>Ποτέ μην ανακατεύεις ξίδι με χλωρίνη</b> ή με άλλα καθαριστικά.</li>
+   <li>Όχι ξίδι σε μάρμαρο, γρανίτη, φυσική πέτρα και ακατέργαστο ξύλο: εκεί μόνο σαπουνόνερο.</li>
+   <li>Δοκίμασε πρώτα σε ένα μικρό σημείο που δεν φαίνεται.</li></ul></div>`;
+
+V.menu=()=>head('Έξυπνο εβδομαδιαίο μενού','Λιγότερο άγχος, λιγότερη σπατάλη','gifts')+
+ `<div class="card"><h3>Το μενού της εβδομάδας</h3><p>Γράψε τα γεύματα μία φορά και μην το ξανασκέφτεσαι όλη την εβδομάδα.</p>
+  ${DAYS.map((D,i)=>`<div class="menu-d">${D.d}</div>${MEALS.map((m,j)=>`<div class="menu-r"><span title="${m[1]}">${m[0]}</span><input data-m="${i}_${j}" maxlength="60" placeholder="${m[1]}" aria-label="${D.d} ${m[1]}" value="${esc(S.menu[i+'_'+j]||'')}"></div>`).join('')}`).join('')}
+  <button class="btn v" data-act="ideas">✨ Γέμισε τα κενά με ιδέες</button>
+  <button class="btn g" data-act="print" data-w="menu">🖨️ Εκτύπωσε το μενού</button>
+  <button class="btn r" data-act="mclear">Καθάρισε το μενού</button></div>
+ <div class="card"><h3>🛒 Λίστα για το σούπερ μάρκετ</h3>
+  <div class="row" style="margin:0 0 8px"><input class="in1" id="si" maxlength="40" placeholder="π.χ. Ντομάτες" enterkeyhint="done"><button class="btn v" style="width:auto;margin:0;min-height:0;flex:0 0 auto" data-act="sadd">＋</button></div>
+  ${S.shop.length?S.shop.map((s,i)=>`<div class="shop ${s.x?'done':''}"><button class="cb" data-act="stog" data-i="${i}" aria-label="${esc(s.t)}"></button><p>${esc(s.t)}</p><button class="del" data-act="sdel" data-i="${i}" aria-label="Διαγραφή">✕</button></div>`).join('')
+   :'<p style="color:var(--mut)">Η λίστα είναι άδεια. Πρόσθεσε ό,τι χρειάζεσαι για το μενού.</p>'}
+  ${S.shop.some(s=>s.x)?'<button class="btn g" data-act="sclean">Σβήσε όσα αγόρασα</button>':''}</div>`;
+
+V.settings=()=>{
+  const st=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+  return head('Ρυθμίσεις',CONFIG.marca,'home')+
+ `<div class="card"><h3>Το προφίλ μου</h3><label class="l" for="nm">Όνομα</label><input class="in1" id="nm" maxlength="24" value="${esc(S.name)}" placeholder="Το όνομά σου">
+   <label class="l">Το σπίτι μου</label>${homeSeg()}<button class="btn v" data-act="savep">Αποθήκευση</button></div>
+  <div class="card"><h3>📲 ${st?'Η εφαρμογή είναι εγκατεστημένη':'Βάλε την εφαρμογή στην αρχική οθόνη'}</h3>
+   ${st?'<p>Την ανοίγεις από το εικονίδιο στην αρχική οθόνη, σαν κάθε άλλη εφαρμογή.</p>':`<p><b>iPhone (Safari):</b></p><ol class="steps"><li>Πάτα το κουμπί «Κοινή χρήση» <b>⬆︎</b></li><li>Διάλεξε «Προσθήκη στην οθόνη Αφετηρίας»</li></ol>
+   <p><b>Android (Chrome):</b></p><ol class="steps"><li>Πάτα το μενού <b>⋮</b> πάνω δεξιά</li><li>Διάλεξε «Προσθήκη στην αρχική οθόνη»</li></ol>`}</div>
+  <div class="card"><h3>Η πρόοδός μου</h3><p>Οι εργασίες και οι πόντοι σου αποθηκεύονται σε αυτή τη συσκευή. Αν αλλάξεις κινητό ή σβήσεις τα δεδομένα του browser, η πρόοδος ξεκινά από την αρχή.</p>
+   <button class="btn r" data-act="reset">Διαγραφή όλης της προόδου</button></div>
+  <div class="card"><h3>Χρειάζεσαι βοήθεια;</h3><p>Γράψε μας στο <a href="mailto:${CONFIG.soporte}">${CONFIG.soporte}</a>.</p></div>`;
+};
+
+/* ============================================================ ΕΚΤΥΠΩΣΗ */
+function printSheet(w){
+  const sq='<i class="sq"></i>',bt=baseTasks();
+  if(w==='routine'){
+    $('#print').innerHTML=`<h1>${CONFIG.marca}</h1><p class="sub">Η ρουτίνα της εβδομάδας · λιγότερο από 1 ώρα τη μέρα</p>
+     <div class="bx" style="margin-bottom:4mm"><h2>Κάθε μέρα · Η βάση <small>${mins(sum(bt,x=>x.m))} · +${P_BASE} η καθεμία</small></h2>
+      <div class="hd7">${DAYS.map(D=>`<b>${D.s}</b>`).join('')}</div>
+      ${bt.map(x=>`<div class="li"><span>${esc(x.t)}</span><small>${x.m}′</small><div class="sq7">${sq.repeat(7)}</div></div>`).join('')}</div>
+     <div class="g">${DAYS.map((D,i)=>{const dt=dayTasks(i);return `<div class="bx"><h2>${D.d} · ${D.amb} <small>${sum(dt,x=>x.m)}′</small></h2>${dt.map(x=>`<div class="li">${sq}<span>${esc(x.t)}</span><small>${x.m}′ · +${x.p}</small></div>`).join('')}</div>`}).join('')}
+      <div class="bx"><h2>Οι πόντοι μου</h2>${LEVELS.map(l=>`<div class="li">${sq}<span>${l[1]}</span><small>${l[0]} πόντοι</small></div>`).join('')}<div class="li"><span>Σύνολο εβδομάδας: ________</span></div><div class="li"><span>Η ανταμοιβή μου: ${esc(S.reward)||'________________'}</span></div></div></div>
+     <p class="ft">Μετράει η συνέπεια, όχι η τελειότητα.</p>`;
+  }else{
+    $('#print').innerHTML=`<h1>Έξυπνο εβδομαδιαίο μενού</h1><p class="sub">${CONFIG.marca}</p>
+     <table><tr><th></th>${MEALS.map(m=>`<th>${m[1]}</th>`).join('')}</tr>${DAYS.map((D,i)=>`<tr><td>${D.d}</td>${MEALS.map((_,j)=>`<td>${esc(S.menu[i+'_'+j]||'')}</td>`).join('')}</tr>`).join('')}</table>
+     <div class="bx"><h2>Λίστα για το σούπερ μάρκετ</h2><div class="cols">${(S.shop.length?S.shop.map(s=>s.t):Array(18).fill('')).map(t=>`<div class="li">${sq}<span>${esc(t)||'&nbsp;'}</span></div>`).join('')}</div></div>`;
+  }
+  setTimeout(()=>window.print(),60);
+}
+
+/* ============================================================ RENDER + ΕΝΕΡΓΕΙΕΣ */
+const NAV=[['home','🏠','Σήμερα'],['week','📅','Ρουτίνα'],['rooms','🛋️','Χώροι'],['points','🏆','Πόντοι'],['gifts','🎁','Δώρα']];
+const NAVOF={tasks:'home',settings:'home',products:'gifts',menu:'gifts'};
+function render(keep){
+  const y=scrollY;
+  $('#app').innerHTML=V[view]();
+  const nav=$('#nav');nav.hidden=view==='welcome';
+  const cur=NAVOF[view]||view;
+  nav.innerHTML=NAV.map(n=>`<button class="${n[0]===cur?'on':''}" data-act="go" data-v="${n[0]}"><i>${n[1]}</i>${n[2]}</button>`).join('');
+  scrollTo(0,keep?y:0);
+}
+function go(v){view=v;if(v!=='home')sel=sel;render()}
+
+const A={
+  go:e=>{if(e.v==='home'&&view==='home')sel=null;go(e.v)},
+  day:e=>{sel=+e.i;view='home';render()},
+  home:e=>{S.home=+e.i;const n=$('#nm');if(n)S.name=n.value.trim();save();render(1)},
+  start:()=>{S.name=$('#nm').value.trim();S.ok=true;save();view='home';render()},
+  savep:()=>{S.name=$('#nm').value.trim();save();toast('Αποθηκεύτηκε ✓');view='home';render()},
+  tog:e=>{
+    const i=+e.d,ti=todayIdx();
+    if(i>ti){toast('Αυτή η μέρα δεν ήρθε ακόμα 🙂');return}
+    const k=dkey(week()[i]),o=S.done[k]||(S.done[k]={});
+    const all=dayTasks(i).concat(baseTasks()),was=all.length&&cnt(all,k)===all.length;
+    if(e.id in o)delete o[e.id];else{o[e.id]=+e.p;if(navigator.vibrate)navigator.vibrate(12)}
+    if(!Object.keys(o).length)delete S.done[k];
+    save();
+    if(view==='rooms')openRoom=i;
+    render(1);
+    if(!was&&all.length&&cnt(all,k)===all.length){confetti();toast('Μπράβο! Η μέρα ολοκληρώθηκε 🎉')}
+    else if(e.id in (S.done[k]||{}))toast('+'+e.p+' πόντοι ⭐');
+  },
+  off:e=>{if(S.off[e.id])delete S.off[e.id];else S.off[e.id]=1;save();render(1)},
+  add:()=>{const t=$('#nt').value.trim();if(!t){toast('Γράψε την εργασία');$('#nt').focus();return}
+    S.custom.push({id:'c'+Date.now().toString(36),t,m:+$('#nm2').value,day:+$('#nd').value});save();render(1);toast('Η εργασία προστέθηκε ✓')},
+  del:e=>{S.custom=S.custom.filter(c=>c.id!==e.id);save();render(1)},
+  rew:e=>{S.reward=S.reward===e.r?'':e.r;save();render(1)},
+  rewc:()=>{const v=$('#rw').value.trim();if(v){S.reward=v;save();render(1);toast('Η ανταμοιβή σου ορίστηκε 🎁')}},
+  ideas:()=>{let n=0;DAYS.forEach((_,i)=>MEALS.forEach((_,j)=>{const k=i+'_'+j;if(!S.menu[k]){S.menu[k]=IDEAS[j][i];n++}}));save();render(1);toast(n?'Το μενού γέμισε με ιδέες ✨':'Το μενού είναι ήδη γεμάτο')},
+  mclear:()=>{if(confirm('Να σβηστεί όλο το μενού;')){S.menu={};save();render(1)}},
+  sadd:()=>{const el=$('#si'),t=el.value.trim();if(!t){el.focus();return}S.shop.push({t,x:0});save();render(1);$('#si').focus()},
+  stog:e=>{S.shop[+e.i].x=S.shop[+e.i].x?0:1;save();render(1)},
+  sdel:e=>{S.shop.splice(+e.i,1);save();render(1)},
+  sclean:()=>{S.shop=S.shop.filter(s=>!s.x);save();render(1)},
+  print:e=>printSheet(e.w),
+  reset:()=>{if(confirm('Θα σβηστούν οι εργασίες, οι πόντοι και το μενού σου. Συνέχεια;')){try{localStorage.removeItem(KEY)}catch(x){}S=def();view='welcome';sel=null;render()}}
+};
+document.addEventListener('click',ev=>{const b=ev.target.closest('[data-act]');if(!b)return;const f=A[b.dataset.act];if(f)f(b.dataset)});
+document.addEventListener('input',ev=>{const k=ev.target.dataset&&ev.target.dataset.m;if(k){const v=ev.target.value.trim();if(v)S.menu[k]=v;else delete S.menu[k];save()}});
+document.addEventListener('keydown',ev=>{if(ev.key!=='Enter')return;const id=ev.target.id;
+  if(id==='si')A.sadd();else if(id==='nt')A.add();else if(id==='rw')A.rewc();else if(id==='nm'&&view==='welcome')A.start()});
+document.addEventListener('toggle',ev=>{const r=ev.target.dataset&&ev.target.dataset.room;if(r!=null&&ev.target.open)openRoom=+r},true);
+/* νέα μέρα όταν η εφαρμογή ξανανοίγει */
+let lastDay=dkey(today());
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&dkey(today())!==lastDay){lastDay=dkey(today());sel=null;render()}});
+
+/* εικονίδιο + manifest για «Προσθήκη στην αρχική οθόνη» (όλα μέσα σε αυτό το αρχείο) */
+(function(){try{
+  const icon=n=>{const c=document.createElement('canvas');c.width=c.height=n;const x=c.getContext('2d'),g=x.createLinearGradient(0,0,n,n);
+    g.addColorStop(0,'#7C3AED');g.addColorStop(1,'#4C1D95');x.fillStyle=g;x.fillRect(0,0,n,n);
+    const u=n/100;x.fillStyle='#fff';x.beginPath();x.moveTo(50*u,20*u);x.lineTo(82*u,48*u);x.lineTo(74*u,48*u);x.lineTo(74*u,78*u);x.lineTo(26*u,78*u);x.lineTo(26*u,48*u);x.lineTo(18*u,48*u);x.closePath();x.fill();
+    x.strokeStyle='#16A34A';x.lineWidth=7*u;x.lineCap='round';x.lineJoin='round';x.beginPath();x.moveTo(38*u,58*u);x.lineTo(47*u,67*u);x.lineTo(63*u,49*u);x.stroke();
+    return c.toDataURL('image/png')};
+  const i192=icon(192),i512=icon(512),add=(rel,href,sizes)=>{const l=document.createElement('link');l.rel=rel;l.href=href;if(sizes)l.sizes=sizes;document.head.appendChild(l)};
+  add('icon',i192);add('apple-touch-icon',icon(180),'180x180');
+  const url=location.href.split('#')[0];
+  if(/^https?:/.test(url)){const m={name:CONFIG.marca,short_name:'Ρουτίνα',lang:'el',start_url:url,scope:url.replace(/[^/]*$/,''),display:'standalone',background_color:'#4C1D95',theme_color:'#4C1D95',
+    icons:[{src:i192,sizes:'192x192',type:'image/png',purpose:'any maskable'},{src:i512,sizes:'512x512',type:'image/png',purpose:'any maskable'}]};
+    add('manifest','data:application/manifest+json;charset=utf-8,'+encodeURIComponent(JSON.stringify(m)))}
+}catch(e){}})();
+
+render();
+</script>
+</body>
+</html>
